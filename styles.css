@@ -1,0 +1,19 @@
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-container button {
+    height: 40px;
+    font-size: 1.3rem;
+    margin: 5px;
+    cursor: pointer;
+}
+
+p {
+    font-size: 1.2rem;
+    line-height: 2;
+}
