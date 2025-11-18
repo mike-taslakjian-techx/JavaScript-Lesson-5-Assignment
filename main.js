@@ -19,14 +19,14 @@ async function btnClick (e) {
     p.innerText = "Loading...";
     console.log("Fetching users...");
     let users = null;
-    const response = new Request("https://reqres.in/api/users?delay=1", {
+    const request = new Request("https://reqres.in/api/users?delay=1", {
         headers: {
             "x-api-key": "reqres-free-v1"
         }
     });
 
     if (e.target.id === "with-header") {
-        users = await fetchUsers(response);
+        users = await fetchUsers(request);
         p.innerText = await processData(users);
         console.log("Done");
     } else {
@@ -44,7 +44,6 @@ async function processData (users) {
 
 async function fetchUsers (requestObj) {
     try {
-        //debugger;
         const data = await fetch(requestObj);
         
         if (!data.ok) {
