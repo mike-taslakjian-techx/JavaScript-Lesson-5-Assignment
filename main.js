@@ -19,24 +19,21 @@ async function btnClick (e) {
     p.innerText = "Loading...";
     console.log("Fetching users...");
     let users = null;
+    const response = new Request("https://reqres.in/api/users?delay=1", {
+        headers: {
+            "x-api-key": "reqres-free-v1"
+        }
+    });
 
     if (e.target.id === "with-header") {
-        users = await fetchUsers({ "x-api-key": "reqres-free-v1" });
-    } else {
-        users = await fetchUsers();
-    }   
-
-    if (isValid(users)) {
+        users = await fetchUsers(response);
         p.innerText = await processData(users);
         console.log("Done");
     } else {
-        p.innerText = "No Users";
-    }
+        users = await fetchUsers("https://reqres.in/api/users?delay=1");
+        p.innerText = "No users";
+    }   
 };
-
-function isValid (users) {
-    return users ? true : false;
-}
 
 async function processData (users) {
     const names = await new Promise((resolve, reject) => {
@@ -45,12 +42,19 @@ async function processData (users) {
     return names;
 };
 
-async function fetchUsers (header = {}) {
-    const data = await fetch("https://reqres.in/api/users?delay=1", {
-            method: "GET",
-            headers: header
-        });
-    const jsonData = await data.json();
-    const users = jsonData.data;
-    return users;
+async function fetchUsers (requestObj) {
+    try {
+        //debugger;
+        const data = await fetch(requestObj);
+        
+        if (!data.ok) {
+            return "No users";
+        }
+        const jsonData = await data.json();
+        console.log(jsonData);
+        const users = jsonData.data;
+        return users;
+    } catch (error) {
+        return "No users";
+    }
 };
